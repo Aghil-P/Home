@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Tropical Haven — Luxury Villa Concept</title>
+<meta name="description" content="An interactive walkthrough of a two-storey tropical Kerala luxury villa: interactive floor plans, room-by-room detail, a guided tour and a navigable 3D model.">
+<meta name="theme-color" content="#1f5b3f">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#127796;</text></svg>">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ------------------------------------------------------------ topbar -->
+  <header class="topbar">
+    <button class="iconbtn" id="menuBtn" aria-label="Open navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+
+    <button class="topbar__brand" id="brand">
+      <span class="topbar__title">The Tropical Haven</span>
+      <span class="topbar__sub">Kerala · 20 Cents</span>
+    </button>
+
+    <button class="btn btn--primary btn--walk" id="walkTop">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M13.4 4.2a1.6 1.6 0 1 1-3.2 0 1.6 1.6 0 0 1 3.2 0zM11 8l-3 3.4 1.8 2.2L8 20M11 8l3.2 1.4L16 14M9.8 13.6 13 12.6"/>
+      </svg>
+      <span class="btn__label">Walk through</span>
+    </button>
+
+    <button class="iconbtn" id="themeBtn" aria-label="Switch to night view"></button>
+  </header>
+
+  <!-- ------------------------------------------------------------- shell -->
+  <div class="shell">
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <main class="main" id="main"></main>
+  </div>
+</div>
+
+<!-- ----------------------------------------------------- mobile drawer -->
+<div class="scrim" id="scrim"></div>
+<nav class="navdrawer" id="navdrawer" aria-label="Sections">
+  <div class="navdrawer__grip"></div>
+  <div id="drawerNav"></div>
+</nav>
+
+<!-- -------------------------------------------------------- room panel -->
+<aside class="panel" id="panel" aria-label="Room details">
+  <div class="panel__grip"></div>
+  <div class="panel__head"></div>
+  <div class="panel__body"></div>
+</aside>
+
+<!-- ----------------------------------------------------------- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Image viewer">
+  <button class="lightbox__close" aria-label="Close">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+  <button class="lightbox__nav lightbox__nav--prev" aria-label="Previous image">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 5 8 12l7 7"/></svg>
+  </button>
+  <img alt="">
+  <div class="lightbox__cap"></div>
+  <button class="lightbox__nav lightbox__nav--next" aria-label="Next image">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<!-- ------------------------------------------------------- guided tour -->
+<div class="tour" id="tour" role="dialog" aria-label="Guided tour">
+  <div class="tour__stage" id="tourStage"></div>
+  <div class="tour__hud">
+    <div class="tour__top">
+      <div class="tour__routename" id="tourRoute"></div>
+      <button class="btn" id="tourWalk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M13.4 4.2a1.6 1.6 0 1 1-3.2 0 1.6 1.6 0 0 1 3.2 0zM11 8l-3 3.4 1.8 2.2L8 20M11 8l3.2 1.4L16 14M9.8 13.6 13 12.6"/>
+        </svg>
+        <span>Walk here</span>
+      </button>
+      <button class="iconbtn" id="tourClose" aria-label="Close tour">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+          stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="tour__map" id="tourMap"></div>
+
+    <div class="tour__caption">
+      <h3 id="tourTitle"></h3>
+      <p id="tourCaption"></p>
+    </div>
+
+    <div class="tour__bottom">
+      <button class="iconbtn" id="tourPrev" aria-label="Previous stop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+          stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>
+      </button>
+      <button class="iconbtn" id="tourPlay" aria-label="Play or pause"></button>
+      <button class="iconbtn" id="tourNext" aria-label="Next stop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+          stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <div class="tour__dots" id="tourDots"></div>
+      <div id="tourStep" style="font-size:12.5px;opacity:.75"></div>
+    </div>
+  </div>
+</div>
+
+<!-- --------------------------------------------------- 3D walkthrough -->
+<div class="walk" id="walk" role="dialog" aria-label="3D walkthrough">
+  <div id="walkCanvas" style="position:absolute;inset:0"></div>
+
+  <div class="walk__hud">
+    <div class="walk__top">
+      <div class="walk__where">
+        <div class="walk__room" id="walkRoom">Entrance</div>
+        <div class="walk__floor" id="walkFloor">Ground floor</div>
+      </div>
+      <button class="btn" id="walkFloorBtn">Ground</button>
+      <button class="btn" id="walkTeleportBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 21s6.4-6.2 6.4-10.4a6.4 6.4 0 1 0-12.8 0C5.6 14.8 12 21 12 21zM12 8.4a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4z"/>
+        </svg>
+        <span class="btn__label">Go to</span>
+      </button>
+      <button class="iconbtn" id="walkTourBtn" aria-label="Guided tour">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6L19 12z"/></svg>
+      </button>
+      <button class="iconbtn" id="walkClose" aria-label="Exit walkthrough">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+          stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="walk__teleport" id="walkTeleport"></div>
+    <div class="walk__minimap" id="walkMap"></div>
+    <div class="walk__crosshair" id="walkCross"></div>
+
+    <div class="walk__hint" id="walkHint">
+      Click to look · W A S D to move · Shift to run · click a room for details
+    </div>
+
+    <div class="stick" id="stick"><div class="stick__knob" id="stickKnob"></div></div>
+  </div>
+
+  <div class="walk__loading" id="walkLoading">Building the house…</div>
+  <div class="walk__fallback" id="walkFallback" style="display:none"></div>
+</div>
+
+<noscript>
+  <div style="padding:40px;max-width:60ch;margin:0 auto;font-family:Georgia,serif">
+    <h1>The Tropical Haven</h1>
+    <p>This presentation needs JavaScript for its interactive plans, guided
+    tour and 3D walkthrough. The concept sheets are in
+    <code>assets/sheets/</code> and the design brief is in
+    <code>readme.md</code>.</p>
+  </div>
+</noscript>
+
+<script src="assets/vendor/three.min.js"></script>
+<script src="js/data.villa.js"></script>
+<script src="js/plan.svg.js"></script>
+<script src="js/explorer.js"></script>
+<script src="js/tour.js"></script>
+<script src="js/walk3d.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
